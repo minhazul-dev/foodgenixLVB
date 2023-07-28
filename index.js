@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require('multer');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
@@ -9,6 +10,7 @@ const port = process.env.PORT || 9000;
 
 app.use(cors());
 app.use(express.json());
+const upload = multer();
 
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
@@ -24,9 +26,14 @@ async function run() {
     const usersCollection = client.db("Organization").collection("users")
     const paymentsCollection = client.db("Organization").collection("payments");
     const volunteersCollection = client.db("Organization").collection("volunteer");
+    const getInTouchCollection = client.db("Organization").collection("getInTouchMessages");
     const clothesCollection = client.db("Organization").collection("clothes");
-    const fooddonateCollection = client.db("Organization").collection("fooddonate");
-    const footCollection = client.db("Organization").collection("foot");
+    const multiDonationCollection = client.db("Organization").collection("multiDonation");
+    const liveFoodDonateCollection = client.db("Organization").collection("liveFoodDonate");
+    const liveFoodRequestCollection = client.db("Organization").collection("liveFoodRequest");
+    // const fooddonateCollection = client.db("Organization").collection("fooddonate");
+
+    // const footCollection = client.db("Organization").collection("foot");
 
 
     app.post("/addPayment", async (req, res) => {
@@ -51,28 +58,30 @@ async function run() {
 
       res.send(result);
     });
-    app.post("/fooddonate", async (req, res) => {
+
+    // app.post('/fooddonate', upload.none(), async (req, res) => {
+    //   const user = req.body;
+    //   const result = await fooddonateCollection.insertOne(user);
+    //   res.send(result);
+    // });
+    // app.get("/fooddonate", async (req, res) => {
+    //   const query = {};
+    //   const result = await fooddonateCollection.find(query).toArray();
+
+    //   res.send(result);
+    // });
+    app.post("/multiCategory", async (req, res) => {
       const user = req.body;
-      const result = await fooddonateCollection.insertOne(user);
+      const result = await multiDonationCollection.insertOne(user);
       res.send(result);
     });
-    app.get("/fooddonate", async (req, res) => {
+    app.get("/multiCategory", async (req, res) => {
       const query = {};
-      const result = await fooddonateCollection.find(query).toArray();
+      const result = await multiDonationCollection.find(query).toArray();
 
       res.send(result);
     });
-    app.post("/footdonate", async (req, res) => {
-      const user = req.body;
-      const result = await footCollection.insertOne(user);
-      res.send(result);
-    });
-    app.get("/footdonate", async (req, res) => {
-      const query = {};
-      const result = await footCollection.find(query).toArray();
 
-      res.send(result);
-    });
     app.post("/addVolunteer", async (req, res) => {
       const user = req.body;
       const result = await volunteersCollection.insertOne(user);
@@ -84,7 +93,17 @@ async function run() {
 
       res.send(result);
     });
+    app.post("/getInTouch", async (req, res) => {
+      const user = req.body;
+      const result = await getInTouchCollection.insertOne(user);
+      res.send(result);
+    });
+    app.get("/getInTouch", async (req, res) => {
+      const query = {};
+      const result = await getInTouchCollection.find(query).toArray();
 
+      res.send(result);
+    });
 
     app.get("/users", async (req, res) => {
       const query = {};
@@ -107,11 +126,74 @@ async function run() {
         })
     })
 
-    //payments
+    //donate rq
+    // app.post("/liveFoodDonate", async (req, res) => {
+    //   const { locationName, organizationName, phoneNumber } = req.body;
 
+    //   try {
+    //     // Connect to the "fooddonate" collection
+    //     const liveFoodDonateCollection = await connectToCollection("liveFoodDonate");
 
-    //payments
+    //     // Insert the donation data into the collection
+    //     const result = await liveFoodDonateCollection.insertOne({
+    //       locationName,
+    //       organizationName,
+    //       phoneNumber,
+    //     });
 
+    //     console.log("Data saved to fooddonate collection:", result.insertedId);
+    //     res.status(200).json({ message: 'Data sent successfully!' });
+    //   } catch (error) {
+    //     console.error('Error saving donation data:', error);
+    //     res.status(500).json({ message: 'Error occurred while saving donation data' });
+    //   }
+    // });
+
+    // app.post("/liveFoodRequest", async (req, res) => {
+    //   const { locationName, organizationName, phoneNumber } = req.body;
+
+    //   try {
+    //     // Connect to the "fooddonate" collection
+    //     const liveFoodRequestCollection = await connectToCollection("liveFoodRequest");
+
+    //     // Insert the request data into the collection
+    //     const result = await liveFoodRequestCollection.insertOne({
+    //       locationName,
+    //       organizationName,
+    //       phoneNumber,
+    //     });
+
+    //     console.log("Data saved to fooddonate collection:", result.insertedId);
+    //     res.status(200).json({ message: 'Data sent successfully!' });
+    //   } catch (error) {
+    //     console.error('Error saving request data:', error);
+    //     res.status(500).json({ message: 'Error occurred while saving request data' });
+    //   }
+    // });
+    //donate req
+    app.post("/liveFoodDonate", async (req, res) => {
+      const user = req.body;
+      const result = await liveFoodDonateCollection.insertOne(user);
+      res.send(result);
+    });
+    app.get("/liveFoodDonate", async (req, res) => {
+      const query = {};
+      const result = await liveFoodDonateCollection.find(query).toArray();
+
+      res.send(result);
+    });
+
+    app.post("/liveFoodRequest", async (req, res) => {
+      const user = req.body;
+      const result = await liveFoodRequestCollection.insertOne(user);
+      res.send(result);
+    });
+    app.get("/liveFoodRequest", async (req, res) => {
+      const query = {};
+      const result = await liveFoodRequestCollection.find(query).toArray();
+
+      res.send(result);
+    });
   } finally {
   }
 }
