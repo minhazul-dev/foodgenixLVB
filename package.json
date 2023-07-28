@@ -12,9 +12,9 @@
   "name": "foodgenix-server",
   "version": "1.0.0",
   "main": "index.js",
-  "build":"npm i",
   "scripts": {
     "start": "node index.js",
+    "build": "npm i",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
