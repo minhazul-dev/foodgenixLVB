@@ -12,9 +12,9 @@ const port = process.env.PORT || 9000;
 app.use(cors());
 app.use(express.json());
 
-const accountSid = 'AC6118945ca9cf287721cf42b5fb4b2410';
-const authToken = 'd533f1c358f3412a7ebdb95547cb0f37';
-const twilioPhoneNumber = '+14327772068';
+const accountSid = process.env.accountSid;
+const authToken = process.env.authToken;;
+const twilioPhoneNumber = process.env.twilioPhoneNumber;
 
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
