@@ -65,7 +65,7 @@ async function run() {
           res.status(200).json({ success: true, message: 'SMS notification sent successfully' });
         })
         .catch((error) => {
-          console.error('Error sending SMS notification:', error);
+          console.error('Error sending SMS notification :', error);
           res.status(500).json({ success: false, message: 'Error sending SMS notification' });
         });
     });
