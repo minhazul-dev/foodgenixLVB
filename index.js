@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 const accountSid = process.env.accountSid;
-const authToken = process.env.authToken;;
+const authToken = process.env.authToken;
 const twilioPhoneNumber = process.env.twilioPhoneNumber;
 
 
